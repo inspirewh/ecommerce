@@ -24,7 +24,7 @@ router.get('/:id', (req, res) => {
     include: [
       {model: Product}
     ]
-  }).then(categories + res.json(category))
+  }).then(category => res.json(category))
   .catch(handleError500(res));
   
 });
@@ -39,12 +39,35 @@ router.post('/', (req, res) => {
   .catch(handleError500(res));
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   // update a category by its `id` value
+  try{
+    const update = await Category.update(
+      {
+      category_name: req.body.category_name,
+    }, 
+    {
+      where: {
+        id: req.params.id},
+      }
+    );
+
+    const updatedCategory = await Category.findByPk(req.params.id);
+    res.json(updatedCategory);
+   }catch(err){
+    handleError500(res)(err);
+    console.log(err)
+  }
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   // delete a category by its `id` value
+  try {
+    const deleted = await Category.destroy({ where: { id: req.params.id } });
+    res.json(deleted);
+  } catch (err) {
+    handleError500(res)(err);
+  }
 });
 
 module.exports = router;
