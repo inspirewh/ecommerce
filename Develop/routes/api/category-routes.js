@@ -29,14 +29,17 @@ router.get('/:id', (req, res) => {
   
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   // create a new category
-  Category.create({
-    category_name: req.body.category_name,
-  }).then(category => {
-    res.json(category)
-  })
-  .catch(handleError500(res));
+  try{
+    const category = await Category.create({
+      category_name: req.body.category_name,
+    });
+    res.json(category);
+  } catch (err) {
+    handleError500(res)(err);
+    console.log(err);
+  }
 });
 
 router.put('/:id', async (req, res) => {
@@ -62,11 +65,16 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   // delete a category by its `id` value
-  try {
-    const deleted = await Category.destroy({ where: { id: req.params.id } });
+  try{
+    const deleted = await Category.destroy({ 
+      where: { 
+        id: req.params.id,
+      } 
+    })
     res.json(deleted);
-  } catch (err) {
+  }catch(err){
     handleError500(res)(err);
+    console.log(err)
   }
 });
 

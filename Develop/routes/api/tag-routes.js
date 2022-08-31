@@ -1,12 +1,22 @@
 const router = require('express').Router();
+const { handleError500 } = require("../../utils/error-handler");
 const { Tag, Product, ProductTag } = require('../../models');
 
 // The `/api/tags` endpoint
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   // find all tags
-  // be sure to include its associated Product data
+  try {
+    const tagList = await Tag.findAll({
+    include: [{model: Product, as: "product_tags"}]
+  })
+  res.json(tagList);
+  } catch (err) {
+    handleError500(res)(err);
+    console.log(err)
+  }
 });
+
 
 router.get('/:id', (req, res) => {
   // find a single tag by its `id`
