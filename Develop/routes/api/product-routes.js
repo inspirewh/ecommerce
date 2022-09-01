@@ -53,7 +53,7 @@ router.post('/', async (req, res) => {
       tagIds: [1, 2, 3, 4]
     }
   */
-  Product.create(req.body)
+    Product.create(req.body)
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
       if (req.body.tagIds.length) {
@@ -74,7 +74,6 @@ router.post('/', async (req, res) => {
       res.status(400).json(err);
     });
 });
-
 
 // update product
 router.put('/:id', (req, res) => {
@@ -100,8 +99,6 @@ router.put('/:id', (req, res) => {
             tag_id,
           };
         });
-
-
       // figure out which ones to remove
       const productTagsToRemove = productTags
         .filter(({ tag_id }) => !req.body.tagIds.includes(tag_id))
@@ -120,8 +117,14 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   // delete one product by its `id` value
+  try {
+    const deleted = await Product.destroy({ where: { id: req.params.id } });
+    res.json(deleted);
+  } catch (err) {
+    handleError500(res)(err);
+  }
 });
 
 module.exports = router;
