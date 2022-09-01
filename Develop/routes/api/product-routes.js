@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const { handleError500 } = require("../../utils/error-handler");
 const { Tag, Product, ProductTag, Category } = require('../../models');
-const { findByPk } = require('../../models/Category');
 
 // The `/api/products` endpoint
 
@@ -56,7 +55,7 @@ router.post('/', async (req, res) => {
     Product.create(req.body)
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
-      if (req.body.tagIds.length) {
+      if (req.body.tagIds && req.body.tagIds.length) {
         const productTagIdArr = req.body.tagIds.map((tag_id) => {
           return {
             product_id: product.id,
