@@ -17,6 +17,7 @@
 
   ## Application Demo
   The walkthrough video demonstrating the functionality can be view here:
+  
   https://user-images.githubusercontent.com/20904553/184606287-e2116f8e-442e-4976-92ea-ac08616afd95.mp4
  
   ## [Installation/Usage](#usage)
