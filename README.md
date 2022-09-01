@@ -1,6 +1,6 @@
 
   
-  # Note Taking Application
+  # E-Commerce Backend (Obeject Relational Mapping)
   
   ## Table Of Contents
   * [Description](#description)
